@@ -12,7 +12,6 @@ import { ChatModule } from './modules/chat/chat.module';
       isGlobal: true,
       load: [appConfig, mongoDbConfig],
     }),
-    
     LeadModule,
     ChatModule,
   ],

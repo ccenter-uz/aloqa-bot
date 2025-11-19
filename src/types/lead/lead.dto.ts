@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { LeadTypeEnum } from './enums';
 
 export class CreateLeadDto {
   @ApiProperty({
@@ -17,4 +18,31 @@ export class CreateLeadDto {
   @IsString()
   @IsNotEmpty()
   phone: string;
+
+  @ApiProperty({
+    description: 'Type of the lead',
+    required: false,
+    enum: LeadTypeEnum,
+  })
+  @IsEnum(LeadTypeEnum)
+  @IsOptional()
+  type?: LeadTypeEnum;
+
+  @ApiProperty({
+    description: 'Additional notes about the lead',
+    type: String,
+    required: false,
+  })
+  @IsString()
+  @IsOptional()
+  title?: string;
+
+  @ApiProperty({
+    description: 'Question of the lead',
+    type: String,
+    required: false,
+  })  
+  @IsString()
+  @IsOptional()
+  question?: string;
 }
