@@ -25,7 +25,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   handleConnection(client: Socket) {
     client.emit('message', {
-      text: `Salom! Savol yoki muroja'tingiz bo‘lsa, bemalol yozishingiz mumkin.`,
+      text: `Men Nargiza — sizning virtual ko‘makchingizman.
+Foydalanuvchilarga savollariga javob berishda, jarayonlarni tushuntirishda va tezkor yechimlar taklif qilishda yordam beraman.
+Agar yordam kerak bo‘lsa, menga xabar yuboring — men doimo sizga yordam berishga tayyorman 😊`,
     });
 
     this.logger.log(`Client connected: ${client.id}`);
@@ -41,9 +43,14 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @ConnectedSocket() client: Socket,
   ) {
     this.logger.log(`Received message from ${client.id}:`, data);
-    client.emit('message', {
-      text: `Habaringiz qabul qilindi. Tez orada javob beramiz, iltimos, sahifani tark etmang.`,
-    });
+    if (!client.data.hasSentFirstMessage) {
+      client.emit('message', {
+        text: `Xabaringiz qabul qilindi. Tez orada javob beramiz, iltimos, sahifani tark etmang.`,
+      });
+
+      // Ставим флаг, что первое сообщение уже обработано
+      client.data.hasSentFirstMessage = true;
+    }
     this.chatService.sendMessage({ id: client.id, message: data });
   }
 
