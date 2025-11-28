@@ -41,7 +41,7 @@ export class CreateLeadDto {
     description: 'Question of the lead',
     type: String,
     required: false,
-  })  
+  })
   @IsString()
   @IsOptional()
   question?: string;

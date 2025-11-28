@@ -10,7 +10,7 @@ export class ChatService {
     @Inject(forwardRef(() => BotService))
     private readonly botService: BotService,
   ) {}
- 
+
   async sendMessage(messageData: MessageDto) {
     this.logger.log(`Sending message: ${JSON.stringify(messageData)}`);
     try {

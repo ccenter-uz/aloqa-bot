@@ -8,5 +8,4 @@ import { BotModule } from '../bot/bot.module';
   providers: [ChatGateway, ChatService],
   exports: [ChatGateway, ChatService],
 })
-
 export class ChatModule {}

@@ -56,7 +56,9 @@ export class BotService implements OnModuleDestroy {
 
       if (!repliedMessage || !('text' in repliedMessage)) {
         this.logger.log('No replied text message found');
-        await ctx.reply("Muroja'tga javob berish uchun habarni belgilashni unutmang!!!");
+        await ctx.reply(
+          "Muroja'tga javob berish uchun habarni belgilashni unutmang!!!",
+        );
 
         return;
       }

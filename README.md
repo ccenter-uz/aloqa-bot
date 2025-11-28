@@ -44,6 +44,13 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
+## Rate limiting
+
+- Configure Redis via `REDIS_HOST`, `REDIS_PORT`, `REDIS_PASSWORD` (optional) and `REDIS_DB` if needed.
+- `RateLimitGuard` protects `POST /api/lead` through `@UseGuards(RateLimitGuard)` in `LeadController`, enforcing 1 request / 2s and 10 requests / hour per IP or user.
+- Enable the guard globally by setting `RATE_LIMIT_GLOBAL=true`, which triggers `app.useGlobalGuards(app.get(RateLimitGuard))` in `main.ts`.
+- The guard uses `RateLimitService` (Redis `INCR` + `EXPIRE`) and returns `{ ok: false, reason: '...' }` to produce `429` responses.
+
 ## Run tests
 
 ```bash
