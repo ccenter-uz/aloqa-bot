@@ -35,7 +35,11 @@ export class RateLimitGuard implements CanActivate {
       if (!userResult.ok) {
         this.logger.warn(`User rate limit exceeded: ${userId}`);
         throw new HttpException(
-          { message: userResult.reason },
+          {
+            message: userResult.reason,
+            error: 'Too many requests',
+            statusCode: 429,
+          },
           HttpStatus.TOO_MANY_REQUESTS,
         );
       }
@@ -46,7 +50,11 @@ export class RateLimitGuard implements CanActivate {
     if (!ipResult.ok) {
       this.logger.warn(`IP rate limit exceeded: ${ip}`);
       throw new HttpException(
-        { message: ipResult.reason },
+        {
+          message: ipResult.reason,
+          error: 'Too many requests',
+          statusCode: 429,
+        },
         HttpStatus.TOO_MANY_REQUESTS,
       );
     }

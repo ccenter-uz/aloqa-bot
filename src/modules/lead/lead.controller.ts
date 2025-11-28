@@ -3,7 +3,7 @@ import { LeadService } from './lead.service';
 import { CreateLeadDto } from 'src/types/lead/lead.dto';
 import { RateLimitGuard } from 'src/common/rate-limit/rate-limit.guard';
 
-@Controller('api/lead')
+@Controller('lead')
 @UseGuards(RateLimitGuard)
 export class LeadController {
   private readonly logger = new Logger(LeadController.name);
