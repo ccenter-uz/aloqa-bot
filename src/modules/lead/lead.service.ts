@@ -2,6 +2,7 @@ import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { BotService } from 'src/modules/bot/bot.service';
 import { CreateLeadDto } from 'src/types/lead/lead.dto';
 import { leadFormatter } from 'src/common/helpers/lead-formatter';
+import { LeadTypeEnum } from 'src/types/lead/enums';
 
 @Injectable()
 export class LeadService {
@@ -26,24 +27,29 @@ export class LeadService {
         ),
       );
 
+      
       try {
-        await fetch(
-          'https://script.google.com/macros/s/AKfycbxRVAv8yvuNHUJHBT8uhlA2cXDnYKa8L3CCWvM8nWUW3Z1k9YPlyDLyo2zSPzVUV7yz/exec',
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
+        if (createLeadDto.type === LeadTypeEnum.INTERESTED) {
+           fetch(
+            'https://script.google.com/macros/s/AKfycbxRVAv8yvuNHUJHBT8uhlA2cXDnYKa8L3CCWvM8nWUW3Z1k9YPlyDLyo2zSPzVUV7yz/exec',
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                name: createLeadDto.full_name,
+                phone: createLeadDto.phone,
+              }),
             },
-            body: JSON.stringify(createLeadDto),
-          },
-        );
-        this.logger.log('Lead successfully sent to Google Sheets');
+          );
+          this.logger.log('Lead successfully sent to Google Sheets');
+        }
       } catch (sheetError) {
         this.logger.error(
           `Failed to send lead to Google Sheets: ${sheetError}`,
         );
       }
-      
     } catch (error) {
       this.logger.error(`Failed to create lead: ${error}`);
       throw error;
