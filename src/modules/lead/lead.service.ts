@@ -25,6 +25,25 @@ export class LeadService {
           createLeadDto.question,
         ),
       );
+
+      try {
+        await fetch(
+          'https://script.google.com/macros/s/AKfycbxRVAv8yvuNHUJHBT8uhlA2cXDnYKa8L3CCWvM8nWUW3Z1k9YPlyDLyo2zSPzVUV7yz/exec',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(createLeadDto),
+          },
+        );
+        this.logger.log('Lead successfully sent to Google Sheets');
+      } catch (sheetError) {
+        this.logger.error(
+          `Failed to send lead to Google Sheets: ${sheetError}`,
+        );
+      }
+      
     } catch (error) {
       this.logger.error(`Failed to create lead: ${error}`);
       throw error;

@@ -100,6 +100,8 @@ export class BotService implements OnModuleDestroy {
       await this.bot.telegram.sendMessage(this.targetChatId, text, {
         parse_mode: 'HTML',
       } as any);
+
+      
     } catch (err) {
       this.logger.error('Failed to send message to target chat', err as Error);
     }
